@@ -4,8 +4,9 @@
 *  To be able to run the app, run "npm install firebase --save"
 */
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import * as firebase from 'firebase';
+import { createStackNavigator } from 'react-navigation';
 
 // firebase configurations for the project
 const firebaseConfig = {
