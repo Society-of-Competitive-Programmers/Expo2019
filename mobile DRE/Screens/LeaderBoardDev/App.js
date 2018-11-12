@@ -69,7 +69,7 @@ export default class App extends React.Component {
                 </View> 
             </TouchableOpacity>
 
-            <TouchableOpacity  style={{position: 'relative', marginLeft: 12ç, height:75, width: 75, marginTop: 50}}>
+            <TouchableOpacity  style={{position: 'relative', marginLeft: 12, height:75, width: 75, marginTop: 50}}>
               <Image 
                 source={require("./assets/upload_icon.png")}
                 style={{height:75, width: 75}}
