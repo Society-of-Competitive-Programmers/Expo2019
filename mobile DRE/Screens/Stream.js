@@ -67,30 +67,30 @@ export default class App extends React.Component {
             style={{marginTop: 0, flex: 1, width:'70%', marginTop: 20, height: '100%', alignSelf: 'center', justifyContent: 'center', backgroundColor: 'transparent'}}
           />
 
-          <View style={{flex: 1, position: 'absolute', top: 10, left: 10, zIndex: 0}}>
+          <View style={{flex: 1, position: 'absolute', top: 20, left: 10, zIndex: 0}}>
             <TouchableOpacity style={{position:'relative'}} onPress={() => _navigator()}>
                 <View style={styles.button}>
                   <Text style={styles.buttonText}>Done</Text>    
                 </View> 
             </TouchableOpacity>
 
-            <TouchableOpacity  style={{position: 'relative', marginLeft: 12, height:75, width: 75, marginTop: 50}}>
+            <TouchableOpacity  style={{position: 'relative', marginLeft: 18, height: 100, width: 100, marginTop: 30}}>
               <Image 
-                source={require("../assets/upload_icon.png")}
-                style={{height:75, width: 75}}
+                source={require("../assets/Go.png")}
+                style={{height:87, width: 87}}
               />
             </TouchableOpacity>
-            <TouchableOpacity  style={{position: 'relative', height:100, width: 100, marginTop: 0}}>
+            <TouchableOpacity  style={{position: 'relative', marginLeft: 18, height: 100, width: 100, marginTop: 0}}>
               <Image 
-                source={require("../assets/032_-_menu-512.png")}
-                style={{height:100, width: 100}}
+                source={require("../assets/Stop.png")}
+                style={{height:87, width: 87}}
               />
             </TouchableOpacity>
           </View>
 
           
           {/* Collection of Buttons on right side of screen */}
-          <View style={{flex: 1, position: 'absolute', right: 10, top: 70}}>
+          <View style={{flex: 1, position: 'absolute', right: 10, top: 80}}>
             {/* Left Button */}
             <TouchableOpacity onPressIn={this._decrementDirection} onPressOut={this.stopTimer} style={{position: 'relative', height:100, width: 100}}>
               <Image 
@@ -100,7 +100,7 @@ export default class App extends React.Component {
             </TouchableOpacity>
             
             {/* Right Button */}
-            <TouchableOpacity onPressIn={this._incrementDirection} onPressOut={this.stopTimer} style={{position: 'relative', height:100, width: 100, marginTop: 10}}>
+            <TouchableOpacity onPressIn={this._incrementDirection} onPressOut={this.stopTimer} style={{position: 'relative', height:100, width: 100, marginTop: 0}}>
               <Image 
                 source={require("../assets/right_arrow-512.png")}
                 style={{height:100, width: 100}}

@@ -48,6 +48,10 @@ export default class Login extends React.Component {
 
   }
 
+  componentDidMount() {
+    Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT);
+  }
+
   // Firebase Team:
   
   // make a json object of the user, and push it to the database. User 'push' instead of 'set'. Then call _navigate to move to the next page
