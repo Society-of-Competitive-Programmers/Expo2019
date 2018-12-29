@@ -74,7 +74,7 @@ export default class Login extends React.Component {
     const { navigate } = this.props.navigation;
     navigate("Stream");
   }
-
+  
   render() {
 
     return (
@@ -122,6 +122,11 @@ export default class Login extends React.Component {
           onPress={this._registerUser.bind(this)/*this._registerUser()*/}
           title="Let's Get Started!!!"
           color="#0066ff"
+        />
+        <Button
+          onPress={}
+          title="Leaderboard"
+          color="#ff0000"
         />
       </KeyboardAvoidingView>
       //TODO
