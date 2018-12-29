@@ -42,7 +42,8 @@ export default class App extends React.Component {
   }
 
   _navigator(){
-
+    const { navigate } = this.props.navigation;
+    navigate("Leaderboard");
   }
 
   render() {
