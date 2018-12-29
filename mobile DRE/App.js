@@ -7,6 +7,7 @@ import React from 'react';
 import { View, StyleSheet, StackNavigator} from 'react-native';
 import Login from './Screens/Login.js'
 import Stream from './Screens/Stream.js'
+import Leaderboard from './Screens/Leaderboard.js'
 import {createSwitchNavigator} from 'react-navigation'
 
 
@@ -14,6 +15,7 @@ const AppNavigator = createSwitchNavigator({
  
   "Login": Login,
   "Stream": Stream,
+  "Leaderboard" : Leaderboard
   
 });
 

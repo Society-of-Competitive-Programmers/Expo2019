@@ -124,7 +124,7 @@ export default class Login extends React.Component {
           color="#0066ff"
         />
         <Button
-          onPress={}
+          onPress={() => this.props.navigation.navigate('Leaderboard')}
           title="Leaderboard"
           color="#ff0000"
         />

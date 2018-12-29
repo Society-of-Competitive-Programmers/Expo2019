@@ -8,44 +8,73 @@ export default class Leaderboard extends React.Component {
     this.topTen = populateLeaderboard(10);
   }
 
-  renderRow() {
+  renderRow(player) {
     return (
-      <View style={{ flex: 1, alignSelf: 'stretch', flexDirection: 'row' }}>
-        <View style={{ flex: 1, alignSelf: 'stretch' }}>Test</View>
-        <View style={{ flex: 1, alignSelf: 'stretch' }} />
-        <View style={{ flex: 1, alignSelf: 'stretch' }} />
-        <View style={{ flex: 1, alignSelf: 'stretch' }} />
-        <View style={{ flex: 1, alignSelf: 'stretch' }} />
+      <View style={styles.row} key={player.name}>
+        <View style={styles.cell} key={`${player.name}1`}><Text>{player.name}</Text></View>
+        <View style={styles.cell} key={`${player.name}2`}><Text>{player.age}</Text></View>
+        <View style={styles.cell} key={`${player.name}3`}><Text>{player.school}</Text></View>
+        <View style={styles.cell} key={`${player.name}4`}><Text>{player.score}</Text></View>
       </View>
     );
   }
 
+  
+
   render() {
+    
+
     return (
       <View style={styles.container}>
-        <Text
-          style={{ marginBottom: 20, marginTop: 20, fontSize: 30 }}> D.R.E. Leaderboard </Text>
-      </View>
-      <View 
-        style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        {
-          this.state.topTen.map((user) => { // This will render a row for each user
-            return this.renderRow();
-          })
-        }
-      </View>
-      
-    );
+        <Text style={styles.header}>D.R.E. Leaderboard</Text>
+        <View style={styles.table}>
+          <View style={styles.row}>
+            <View style={styles.cell}><Text>Name</Text></View>
+            <View style={styles.cell}><Text>Age</Text></View>
+            <View style={styles.cell}><Text>School</Text></View>
+            <View style={styles.cell}><Text>Points</Text></View>
+          </View>
+          {
+            this.topTen.map((datum) => { // This will render a row for each data element.
+              return this.renderRow(datum);
+            })
+          }
+        </View> 
+      </View>          
+    )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    height: "90%",
+    width: "90%",
+    top: "5%"
   },
+  header: {
+    fontSize: 20
+  },
+  table: {
+    flex: 1,
+    height: "80%",
+    width: "100%",
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: "black"
+  },
+  row: {
+    flex: 1,
+    alignSelf: 'stretch',
+    flexDirection: 'row',
+    paddingHorizontal: 5
+  },
+  cell: {
+    flex: 1,
+    alignSelf: 'stretch'
+  }
 });
 
 //currently generates dummy users
