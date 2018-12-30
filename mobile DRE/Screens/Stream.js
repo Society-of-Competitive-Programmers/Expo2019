@@ -69,7 +69,7 @@ export default class App extends React.Component {
           />
 
           <View style={{flex: 1, position: 'absolute', top: 20, left: 10, zIndex: 0}}>
-            <TouchableOpacity style={{position:'relative'}} onPress={() => _navigator()}>
+            <TouchableOpacity style={{position:'relative'}} onPress={() => this.props.navigation.navigate('Leaderboard')}>
                 <View style={styles.button}>
                   <Text style={styles.buttonText}>Done</Text>    
                 </View> 

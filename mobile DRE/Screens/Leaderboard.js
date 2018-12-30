@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
 export default class Leaderboard extends React.Component {
@@ -21,6 +21,9 @@ export default class Leaderboard extends React.Component {
     };
   }
 
+  componentDidMount() {
+    Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.ALL_BUT_UPSIDE_DOWN);
+  }
   
   populateTableData(){
     let tableData = [];
@@ -42,13 +45,24 @@ export default class Leaderboard extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.header}>D.R.E. Leaderboard</Text>
-        <Table style={styles.table}>
-          <Row data={state.tableHead} flexArr={[1, 1, 1, 1, 1]} style={styles.head} textStyle={styles.text}/>
-          <TableWrapper style={styles.wrapper}>
-            <Col data={state.tableTitle} style={styles.title} heightArr={[28, 28]} textStyle={styles.text}/>
-            <Rows data={state.tableData} flexArr={[1, 1, 1, 1]} style={styles.row} textStyle={styles.text}/>
-          </TableWrapper>
-        </Table> 
+        <ScrollView style={{width: "100%"}} showsVerticalScrollIndicator={false}>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}  directionalLockEnabled={false}>
+            <Table style={styles.table}>
+              <Row data={state.tableHead} flexArr={[1, 1, 1, 1, 1]} style={styles.head} textStyle={styles.text}/>
+              <TableWrapper style={styles.wrapper}>
+                <Col data={state.tableTitle} style={styles.title} heightArr={[28, 28]} textStyle={styles.text}/>
+                <Rows data={state.tableData} flexArr={[1, 1, 1, 1]} style={styles.row} textStyle={styles.text}/>
+              </TableWrapper>
+            </Table> 
+          </ScrollView>
+          
+        </ScrollView>
+
+        <Button
+            onPress={() => this.props.navigation.navigate('Login')}
+            title="Back to Login Screen"
+            color="#ff0000"
+          />
       </View>          
     )
   }
@@ -56,7 +70,7 @@ export default class Leaderboard extends React.Component {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
-  header: {fontSize: 20, padding: 10},
+  header: {fontSize: 20, padding: 10, paddingTop: 30, textAlign: 'center', fontWeight: 'bold'},
   table: {width: 400},
   head: { height: 40, backgroundColor: '#f1f8ff' },
   wrapper: { flexDirection: 'row' },

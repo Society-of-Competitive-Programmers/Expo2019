@@ -4,7 +4,8 @@
 *  To be able to run the app, run "npm install firebase --save"
 */
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Image, KeyboardAvoidingView} from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Image, ScrollView} from 'react-native';
+import { KeyboardAwareScrollView}  from 'react-native-keyboard-aware-scroll-view'
 import * as firebase from 'firebase';
 
 // firebase configurations for the project
@@ -49,7 +50,7 @@ export default class Login extends React.Component {
   }
 
   componentDidMount() {
-    Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT);
+    Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.ALL_BUT_UPSIDE_DOWN);
   }
 
   // Firebase Team:
@@ -85,9 +86,15 @@ export default class Login extends React.Component {
       // Login Page Layout Team:
       // put all the layout elements inside this view i.e. all the text input boxes, buttons, all the styles
       //TODO
-      <KeyboardAvoidingView 
-      style={styles.container}
-      behavior="padding">
+      <ScrollView style={{width: "100%"}}>
+      <KeyboardAwareScrollView 
+        style={{paddingTop: 100}}
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        contentContainerStyle={styles.container}
+        scrollEnabled={true}
+        animated={true}
+      >
+      
         <Image
           source={{
             uri: 'https://facebook.github.io/react/logo-og.png',
@@ -132,7 +139,8 @@ export default class Login extends React.Component {
           title="Leaderboard"
           color="#ff0000"
         />
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
+      </ScrollView>
       //TODO
     );
   }
