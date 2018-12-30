@@ -10,7 +10,13 @@ export default class Leaderboard extends React.Component {
     this.topPlayers = populateLeaderboard(this.numLeaders);
     this.state = {
       tableHead: ['', 'Name', 'Age', 'School', 'Points'],
-      tableTitle: [...Array(this.numLeaders).keys()],   
+      tableTitle: (function (numLeaders) {
+        const leaders = [];
+        for (let i = 1; i < numLeaders + 1; i++) {
+          leaders.push(i);
+        }
+        return leaders;
+      }(this.numLeaders)),   
       tableData: this.populateTableData()
     };
   }
