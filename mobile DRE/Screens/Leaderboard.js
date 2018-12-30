@@ -1,80 +1,68 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
 export default class Leaderboard extends React.Component {
   
   constructor(props) {
-    super();
-    this.topTen = populateLeaderboard(10);
-  }
-
-  renderRow(player) {
-    return (
-      <View style={styles.row} key={player.name}>
-        <View style={styles.cell} key={`${player.name}1`}><Text>{player.name}</Text></View>
-        <View style={styles.cell} key={`${player.name}2`}><Text>{player.age}</Text></View>
-        <View style={styles.cell} key={`${player.name}3`}><Text>{player.school}</Text></View>
-        <View style={styles.cell} key={`${player.name}4`}><Text>{player.score}</Text></View>
-      </View>
-    );
+    super(props);
+    this.numLeaders = 10;
+    this.topPlayers = populateLeaderboard(this.numLeaders);
+    this.state = {
+      tableHead: ['', 'Name', 'Age', 'School', 'Points'],
+      tableTitle: (function (numLeaders) {
+        const leaders = [];
+        for (let i = 1; i < numLeaders + 1; i++) {
+          leaders.push(i);
+        }
+        return leaders;
+      }(this.numLeaders)),   
+      tableData: this.populateTableData()
+    };
   }
 
   
+  populateTableData(){
+    let tableData = [];
+    this.topPlayers.forEach((player) => {
+      let rowData = [];
+      rowData.push(player.name);
+      rowData.push(player.age);
+      rowData.push(player.school);
+      rowData.push(player.score);
+      tableData.push(rowData);
+    });
+    return tableData;
+  }
+
 
   render() {
-    
+    const state = this.state;    
 
     return (
       <View style={styles.container}>
         <Text style={styles.header}>D.R.E. Leaderboard</Text>
-        <View style={styles.table}>
-          <View style={styles.row}>
-            <View style={styles.cell}><Text>Name</Text></View>
-            <View style={styles.cell}><Text>Age</Text></View>
-            <View style={styles.cell}><Text>School</Text></View>
-            <View style={styles.cell}><Text>Points</Text></View>
-          </View>
-          {
-            this.topTen.map((datum) => { // This will render a row for each data element.
-              return this.renderRow(datum);
-            })
-          }
-        </View> 
+        <Table style={styles.table}>
+          <Row data={state.tableHead} flexArr={[1, 1, 1, 1, 1]} style={styles.head} textStyle={styles.text}/>
+          <TableWrapper style={styles.wrapper}>
+            <Col data={state.tableTitle} style={styles.title} heightArr={[28, 28]} textStyle={styles.text}/>
+            <Rows data={state.tableData} flexArr={[1, 1, 1, 1]} style={styles.row} textStyle={styles.text}/>
+          </TableWrapper>
+        </Table> 
       </View>          
     )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: "90%",
-    width: "90%",
-    top: "5%"
-  },
-  header: {
-    fontSize: 20
-  },
-  table: {
-    flex: 1,
-    height: "80%",
-    width: "100%",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: "black"
-  },
-  row: {
-    flex: 1,
-    alignSelf: 'stretch',
-    flexDirection: 'row',
-    paddingHorizontal: 5
-  },
-  cell: {
-    flex: 1,
-    alignSelf: 'stretch'
-  }
+  container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
+  header: {fontSize: 20, padding: 10},
+  table: {width: 400},
+  head: { height: 40, backgroundColor: '#f1f8ff' },
+  wrapper: { flexDirection: 'row' },
+  title: { flex: 1, backgroundColor: '#f6f8fa' },
+  row: { height: 28 },
+  text: { textAlign: 'center' }
 });
 
 //currently generates dummy users
