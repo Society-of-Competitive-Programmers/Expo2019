@@ -1,13 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
+import * as firebase from 'firebase';
+
+const database = firebase.database();
+
+const usersRef = database.ref('users/');
+
 
 export default class Leaderboard extends React.Component {
   
+
   constructor(props) {
     super(props);
     this.numLeaders = 10;
-    this.topPlayers = populateLeaderboard(this.numLeaders);
+    this.topPlayers = [];
     this.state = {
       tableHead: ['', 'Name', 'Age', 'School', 'Points'],
       tableTitle: (function (numLeaders) {
@@ -20,6 +27,8 @@ export default class Leaderboard extends React.Component {
       tableData: this.populateTableData()
     };
   }
+
+  
 
   componentDidMount() {
     Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.ALL_BUT_UPSIDE_DOWN);
@@ -41,6 +50,15 @@ export default class Leaderboard extends React.Component {
 
   render() {
     const state = this.state;    
+
+    usersRef.on('value', function (snapshot) {
+      let leaderArray = [];
+      snapshot.forEach(function (childSnapshot) {
+        let player = childSnapshot.val();
+        leaderArray.push(player);
+      });
+      this.topPlayers = populateLeaderboard(leaderArray, this.numLeaders);
+    });
 
     return (
       <View style={styles.container}>
@@ -80,18 +98,14 @@ const styles = StyleSheet.create({
 });
 
 //currently generates dummy users
-function populateLeaderboard(numLeaders) {
-  let leaderArray = [];
-  for(let i = 0; i < numLeaders; i++)
-  {
-    let user = {
-      name: `Player${i}`,
-      age: i + 10,
-      school: 'USF',
-      score: i * 3
-    };
-    leaderArray.push(user);
-  }
-  leaderArray.sort((a, b) => {return b.score - a.score});
+function populateLeaderboard(leaderArray, numLeaders) {
+  
+
+  
+
+  //sort array by name
+  leaderArray.sort((a, b) => {return b.name - a.name});
+
+  leaderArray.slice(0, numLeaders - 1);
   return leaderArray;
 }
