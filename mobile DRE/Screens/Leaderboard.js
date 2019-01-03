@@ -1,11 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
-import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
+import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import * as firebase from 'firebase';
 
 const database = firebase.database();
-
-const usersRef = database.ref('users/');
 
 
 export default class Leaderboard extends React.Component {
@@ -14,7 +12,7 @@ export default class Leaderboard extends React.Component {
   constructor(props) {
     super(props);
     this.numLeaders = 10;
-    this.topPlayers = [];
+    
     this.state = {
       tableHead: ['', 'Name', 'Age', 'School', 'Points'],
       tableTitle: (function (numLeaders) {
@@ -23,43 +21,43 @@ export default class Leaderboard extends React.Component {
           leaders.push(i);
         }
         return leaders;
-      }(this.numLeaders)),   
-      tableData: this.populateTableData()
+      }(this.numLeaders)), 
+      topPlayers: [],
+      tableData: []
     };
+
+    this.onUserData = this.onUserData.bind(this);
   }
 
   
+  onUserData(users) {
+    let leaderArray = [];
+    users.forEach((usersChild) => {
+      let player = usersChild.val();
+      leaderArray.push(player);
+    });
+    
+    let playerArray = populateLeaderboard(leaderArray, this.numLeaders);
+    let dataArray = populateTableData(playerArray);
+
+    this.setState({
+      topPlayers: playerArray,
+      tableData: dataArray
+    });
+    
+  }
 
   componentDidMount() {
+    const usersRef = database.ref('users/');
+
+    usersRef.on('value', this.onUserData);
+
     Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.ALL_BUT_UPSIDE_DOWN);
   }
   
-  populateTableData(){
-    let tableData = [];
-    this.topPlayers.forEach((player) => {
-      let rowData = [];
-      rowData.push(player.name);
-      rowData.push(player.age);
-      rowData.push(player.school);
-      rowData.push(player.score);
-      tableData.push(rowData);
-    });
-    return tableData;
-  }
-
-
   render() {
     const state = this.state;    
-
-    usersRef.on('value', function (snapshot) {
-      let leaderArray = [];
-      snapshot.forEach(function (childSnapshot) {
-        let player = childSnapshot.val();
-        leaderArray.push(player);
-      });
-      this.topPlayers = populateLeaderboard(leaderArray, this.numLeaders);
-    });
-
+  
     return (
       <View style={styles.container}>
         <Text style={styles.header}>D.R.E. Leaderboard</Text>
@@ -97,15 +95,28 @@ const styles = StyleSheet.create({
   text: { textAlign: 'center' }
 });
 
-//currently generates dummy users
+
+
+
+//sorts players by determined property and returns the desired number of results
 function populateLeaderboard(leaderArray, numLeaders) {
   
-
-  
-
   //sort array by name
   leaderArray.sort((a, b) => {return b.name - a.name});
 
-  leaderArray.slice(0, numLeaders - 1);
-  return leaderArray;
+  return leaderArray.slice(0, numLeaders);
+}
+
+// populates table data with player info
+function populateTableData(topPlayers) {
+  let tableData = [];
+  topPlayers.forEach((player) => {
+    let rowData = [];
+    rowData.push(player.name);
+    rowData.push(player.age);
+    rowData.push(player.school);
+    rowData.push(player.score);
+    tableData.push(rowData);
+  });
+  return tableData;
 }
