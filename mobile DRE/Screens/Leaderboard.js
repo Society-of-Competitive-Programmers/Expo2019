@@ -5,10 +5,8 @@ import * as firebase from 'firebase';
 
 const database = firebase.database();
 
-
 export default class Leaderboard extends React.Component {
   
-
   constructor(props) {
     super(props);
     this.numLeaders = 10;
@@ -29,7 +27,7 @@ export default class Leaderboard extends React.Component {
     this.onUserData = this.onUserData.bind(this);
   }
 
-  
+  // Receives user data, sorts it, and populates table state
   onUserData(users) {
     let leaderArray = [];
     users.forEach((usersChild) => {
@@ -94,8 +92,6 @@ const styles = StyleSheet.create({
   row: { height: 28 },
   text: { textAlign: 'center' }
 });
-
-
 
 
 //sorts players by determined property and returns the desired number of results
