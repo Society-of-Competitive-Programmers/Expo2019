@@ -43,9 +43,7 @@ export default class Leaderboard extends React.Component {
     });    
   }
 
-  componentDidMount() {
-    this.setState({ isMounted: true });
-    
+  componentDidMount() {  
     const usersRef = database.ref('users/');
     usersRef.on('value', this.onUserData);
  
