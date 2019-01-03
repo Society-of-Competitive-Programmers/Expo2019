@@ -14,7 +14,7 @@ export default class Leaderboard extends React.Component {
     this.numLeaders = 10;
     
     this.state = {
-      tableHead: ['', 'Name', 'Age', 'School', 'Points'],
+      tableHead: ['', 'Name', 'Age', 'School', 'Time'],
       tableTitle: (function (numLeaders) {
         const leaders = [];
         for (let i = 1; i < numLeaders + 1; i++) {
