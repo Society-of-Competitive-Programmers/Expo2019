@@ -21,7 +21,8 @@ export default class Leaderboard extends React.Component {
         return leaders;
       }(this.numLeaders)), 
       topPlayers: [],
-      tableData: []
+      tableData: [],
+      isMounted: false
     };
 
     this.onUserData = this.onUserData.bind(this);
@@ -34,23 +35,29 @@ export default class Leaderboard extends React.Component {
       let player = usersChild.val();
       leaderArray.push(player);
     });
-    
     let playerArray = populateLeaderboard(leaderArray, this.numLeaders);
     let dataArray = populateTableData(playerArray);
 
-    this.setState({
-      topPlayers: playerArray,
-      tableData: dataArray
-    });
+    if (this.state.isMounted){
+      this.setState({
+        topPlayers: playerArray,
+        tableData: dataArray
+      });
+    }
     
   }
 
   componentDidMount() {
+    this.setState({ isMounted: true });
+    
     const usersRef = database.ref('users/');
-
     usersRef.on('value', this.onUserData);
-
+ 
     Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.ALL_BUT_UPSIDE_DOWN);
+  }
+
+  componentWillUnmount() {
+    this.state.isMounted = false;
   }
   
   render() {
@@ -97,9 +104,17 @@ const styles = StyleSheet.create({
 //sorts players by determined property and returns the desired number of results
 function populateLeaderboard(leaderArray, numLeaders) {
   
+  //filter out empty name fields
+  leaderArray = leaderArray.filter(player => player.name !== "");
   //sort array by name
-  leaderArray.sort((a, b) => {return b.name - a.name});
-
+  leaderArray.sort((a, b) => {
+    if (a.name < b.name)
+      return -1;
+    if (a.name > b.name)
+      return 1;
+    return 0;
+  });
+  //return only desired top number of players
   return leaderArray.slice(0, numLeaders);
 }
 
