@@ -22,7 +22,6 @@ export default class Leaderboard extends React.Component {
       }(this.numLeaders)), 
       topPlayers: [],
       tableData: [],
-      isMounted: false
     };
 
     this.onUserData = this.onUserData.bind(this);
@@ -38,13 +37,10 @@ export default class Leaderboard extends React.Component {
     let playerArray = populateLeaderboard(leaderArray, this.numLeaders);
     let dataArray = populateTableData(playerArray);
 
-    if (this.state.isMounted){
-      this.setState({
-        topPlayers: playerArray,
-        tableData: dataArray
-      });
-    }
-    
+    this.setState({
+      topPlayers: playerArray,
+      tableData: dataArray
+    });    
   }
 
   componentDidMount() {
@@ -54,10 +50,6 @@ export default class Leaderboard extends React.Component {
     usersRef.on('value', this.onUserData);
  
     Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.ALL_BUT_UPSIDE_DOWN);
-  }
-
-  componentWillUnmount() {
-    this.state.isMounted = false;
   }
   
   render() {

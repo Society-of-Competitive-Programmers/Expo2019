@@ -42,3 +42,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+console.ignoredYellowBox = [
+  'Setting a timer'
+];
