@@ -42,3 +42,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+/*Hides a timer bug from emulator in development. Related to android.
+ *
+ * https://github.com/facebook/react-native/issues/12981
+ * */
+console.ignoredYellowBox = [
+  'Setting a timer'
+];

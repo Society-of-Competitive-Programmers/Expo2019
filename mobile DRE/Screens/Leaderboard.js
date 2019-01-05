@@ -1,47 +1,58 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
-import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
+import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
+import * as firebase from 'firebase';
+
+const database = firebase.database();
 
 export default class Leaderboard extends React.Component {
   
   constructor(props) {
     super(props);
     this.numLeaders = 10;
-    this.topPlayers = populateLeaderboard(this.numLeaders);
+    
     this.state = {
-      tableHead: ['', 'Name', 'Age', 'School', 'Points'],
+      tableHead: ['', 'Name', 'Age', 'School', 'Time'],
       tableTitle: (function (numLeaders) {
         const leaders = [];
         for (let i = 1; i < numLeaders + 1; i++) {
           leaders.push(i);
         }
         return leaders;
-      }(this.numLeaders)),   
-      tableData: this.populateTableData()
+      }(this.numLeaders)), 
+      topPlayers: [],
+      tableData: [],
     };
+
+    this.onUserData = this.onUserData.bind(this);
   }
 
-  componentDidMount() {
+  // Receives user data, sorts it, and populates table state
+  onUserData(users) {
+    let leaderArray = [];
+    users.forEach((usersChild) => {
+      let player = usersChild.val();
+      leaderArray.push(player);
+    });
+    let playerArray = populateLeaderboard(leaderArray, this.numLeaders);
+    let dataArray = populateTableData(playerArray);
+
+    this.setState({
+      topPlayers: playerArray,
+      tableData: dataArray
+    });    
+  }
+
+  componentDidMount() {  
+    const usersRef = database.ref('users/');
+    usersRef.on('value', this.onUserData);
+ 
     Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.ALL_BUT_UPSIDE_DOWN);
   }
   
-  populateTableData(){
-    let tableData = [];
-    this.topPlayers.forEach((player) => {
-      let rowData = [];
-      rowData.push(player.name);
-      rowData.push(player.age);
-      rowData.push(player.school);
-      rowData.push(player.score);
-      tableData.push(rowData);
-    });
-    return tableData;
-  }
-
-
   render() {
     const state = this.state;    
-
+  
     return (
       <View style={styles.container}>
         <Text style={styles.header}>D.R.E. Leaderboard</Text>
@@ -79,19 +90,34 @@ const styles = StyleSheet.create({
   text: { textAlign: 'center' }
 });
 
-//currently generates dummy users
-function populateLeaderboard(numLeaders) {
-  let leaderArray = [];
-  for(let i = 0; i < numLeaders; i++)
-  {
-    let user = {
-      name: `Player${i}`,
-      age: i + 10,
-      school: 'USF',
-      score: i * 3
-    };
-    leaderArray.push(user);
-  }
-  leaderArray.sort((a, b) => {return b.score - a.score});
-  return leaderArray;
+
+//sorts players by determined property and returns the desired number of results
+function populateLeaderboard(leaderArray, numLeaders) {
+  
+  //filter out empty name fields
+  leaderArray = leaderArray.filter(player => player.name !== "");
+  //sort array by name
+  leaderArray.sort((a, b) => {
+    if (a.name < b.name)
+      return -1;
+    if (a.name > b.name)
+      return 1;
+    return 0;
+  });
+  //return only desired top number of players
+  return leaderArray.slice(0, numLeaders);
+}
+
+// populates table data with player info
+function populateTableData(topPlayers) {
+  let tableData = [];
+  topPlayers.forEach((player) => {
+    let rowData = [];
+    rowData.push(player.name);
+    rowData.push(player.age);
+    rowData.push(player.school);
+    rowData.push(player.score);
+    tableData.push(rowData);
+  });
+  return tableData;
 }
