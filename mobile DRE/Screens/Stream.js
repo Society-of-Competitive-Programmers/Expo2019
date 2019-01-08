@@ -10,10 +10,15 @@ export default class App extends React.Component {
       direction: 0
     }
 
-    this.timer = null;
-    this._decrementDirection = this._decrementDirection.bind(this);
-    this._incrementDirection = this._incrementDirection.bind(this);
-    this.stopTimer = this.stopTimer.bind(this);
+    this._turn = this._turn.bind(this);
+    this.stopTurn = this.stopTurn.bind(this);
+    this._move = this._move.bind(this);
+    this.stopMove = this.stopMove.bind(this);   
+
+    this.socket = io('https://sleepy-everglades-29815.herokuapp.com/', {jsonp: false});
+    this.socket.on('connect', function(){
+      console.log('Connected to server!');
+    });
   }
 
   state = {
@@ -27,18 +32,20 @@ export default class App extends React.Component {
     Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT);
   }
 
-  _incrementDirection(){
-    this.setState(prevState => ({direction: prevState.direction + 1}));
-    this.timer = setTimeout(this._incrementDirection, 100);
+  _turn(turnDirection){
+    this.socket.emit('turn', turnDirection);
   }
 
-  _decrementDirection(){
-    this.setState(prevState => ({direction: prevState.direction - 1}));
-    this.timer = setTimeout(this._decrementDirection, 100);
+  stopTurn(turnDirection){
+    this.socket.emit('stopTurn', turnDirection);
   }
 
-  stopTimer(){
-    clearTimeout(this.timer);
+  _move(moveDirection){
+    this.socket.emit('move', moveDirection);
+  }
+
+  stopMove(moveDirection){
+    this.socket.emit('stopMove', moveDirection);
   }
 
   _navigator(){
@@ -64,7 +71,7 @@ export default class App extends React.Component {
           
           {/* WebView */}
           <WebView
-            source={{uri: 'https://www.google.com'}}
+            source={{uri: 'https://sleepy-everglades-29815.herokuapp.com/'}} // Insert Pi's camera stream link
             style={{marginTop: 0, flex: 1, width:'70%', marginTop: 20, height: '100%', alignSelf: 'center', justifyContent: 'center', backgroundColor: 'transparent'}}
           />
 
@@ -75,13 +82,13 @@ export default class App extends React.Component {
                 </View> 
             </TouchableOpacity>
 
-            <TouchableOpacity  style={{position: 'relative', marginLeft: 18, height: 100, width: 100, marginTop: 30}}>
+            <TouchableOpacity onPressIn={() => this._move('forward')} onPressOut={() => this.stopMove('forward')} style={{position: 'relative', marginLeft: 18, height: 100, width: 100, marginTop: 30}}>
               <Image 
                 source={require("../assets/Go.png")}
                 style={{height:87, width: 87}}
               />
             </TouchableOpacity>
-            <TouchableOpacity  style={{position: 'relative', marginLeft: 18, height: 100, width: 100, marginTop: 0}}>
+            <TouchableOpacity onPressIn={() => this._move('backward')} onPressOut={() => this.stopMove('backward')} style={{position: 'relative', marginLeft: 18, height: 100, width: 100, marginTop: 0}}>
               <Image 
                 source={require("../assets/Stop.png")}
                 style={{height:87, width: 87}}
@@ -93,7 +100,7 @@ export default class App extends React.Component {
           {/* Collection of Buttons on right side of screen */}
           <View style={{flex: 1, position: 'absolute', right: 10, top: 80}}>
             {/* Left Button */}
-            <TouchableOpacity onPressIn={this._decrementDirection} onPressOut={this.stopTimer} style={{position: 'relative', height:100, width: 100}}>
+            <TouchableOpacity onPressIn={() => this._turn('left')} onPressOut={() => this.stopTurn('left')} style={{position: 'relative', height:100, width: 100}}>
               <Image 
                 source={require("../assets/if_left_arrow_476327.png")}
                 style={{height:100, width: 100}}
@@ -101,7 +108,7 @@ export default class App extends React.Component {
             </TouchableOpacity>
             
             {/* Right Button */}
-            <TouchableOpacity onPressIn={this._incrementDirection} onPressOut={this.stopTimer} style={{position: 'relative', height:100, width: 100, marginTop: 0}}>
+            <TouchableOpacity onPressIn={() => this._turn('right')} onPressOut={() => this.stopTurn('right')} style={{position: 'relative', height:100, width: 100, marginTop: 0}}>
               <Image 
                 source={require("../assets/right_arrow-512.png")}
                 style={{height:100, width: 100}}
