@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, WebView, Button, Alert, Animated, Image, TouchableOpacity } from 'react-native';
+import io from 'socket.io-client/dist/socket.io';
 
 export default class App extends React.Component {
 
