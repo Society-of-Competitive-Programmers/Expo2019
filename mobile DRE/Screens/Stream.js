@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, WebView, Button, Alert, Animated, Image, TouchableOpacity } from 'react-native';
+import io from "socket.io-client/dist/socket.io";
 
 export default class App extends React.Component {
 
@@ -57,7 +58,7 @@ export default class App extends React.Component {
     return (
         <View style={styles.container}>
           
-          <Text style={{textAlign:'left', marginTop: 20, marginRight: 20, zIndex: -1, flexDirection:'row', position: 'absolute', right: 10}}>{this.state.direction}</Text>
+          {/* <Text style={{textAlign:'left', marginTop: 20, marginRight: 20, zIndex: -1, flexDirection:'row', position: 'absolute', right: 10}}>{this.state.direction}</Text> */}
 
           {/* <View style={{position: 'absolute', flex: 1, flexDirection: 'row'}}>
             <TouchableOpacity style={{position:'relative'}}>

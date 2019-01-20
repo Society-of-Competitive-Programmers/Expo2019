@@ -18,6 +18,8 @@
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-table-component": "^1.2.0",
     "react-navigation": "^2.18.2",
+    "rpi-gpio": "^2.1.2",
+    "socket.io-client": "^2.2.0",
     "whatwg-fetch": "^2.0.4"
   }
 }
