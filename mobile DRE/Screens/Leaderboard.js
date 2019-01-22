@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
-import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
+import { Table, TableWrapper, Row, Rows, Col, Cols } from 'react-native-table-component';
 import * as firebase from 'firebase';
 
 const database = firebase.database();
@@ -9,19 +9,15 @@ export default class Leaderboard extends React.Component {
   
   constructor(props) {
     super(props);
-    this.numLeaders = 10;
+    this.numLeaders =  0;
     
     this.state = {
-      tableHead: ['', 'Name', 'Age', 'School', 'Time'],
-      tableTitle: (function (numLeaders) {
-        const leaders = [];
-        for (let i = 1; i < numLeaders + 1; i++) {
-          leaders.push(i);
-        }
-        return leaders;
-      }(this.numLeaders)), 
-      topPlayers: [],
+      
+      tableHead: [[''], ['Name'], ['Age'], ['School'], ['Score']],
       tableData: [],
+      // tableTitle: [],
+      // topPlayers: [],
+      // tableData: [],
     };
 
     this.onUserData = this.onUserData.bind(this);
@@ -29,17 +25,30 @@ export default class Leaderboard extends React.Component {
 
   // Receives user data, sorts it, and populates table state
   onUserData(users) {
+    let data = [[], [], [], [], []];
+    let tableTitle1 = [];
+
     let leaderArray = [];
     users.forEach((usersChild) => {
       let player = usersChild.val();
       leaderArray.push(player);
     });
-    let playerArray = populateLeaderboard(leaderArray, this.numLeaders);
-    let dataArray = populateTableData(playerArray);
+    this.numLeaders = users.length;
+    let playerArray = populateLeaderboard(leaderArray, users.length);
+    //let dataArray = populateTableData(playerArray);
+
+    let i = 1;
+    playerArray.forEach((player) => {
+      data[0].push(i++);
+      data[1].push(player.name);
+      data[2].push(player.age);
+      data[3].push(player.school);
+      data[4].push(player.score);
+    });
+
 
     this.setState({
-      topPlayers: playerArray,
-      tableData: dataArray
+      tableData: data
     });    
   }
 
@@ -59,12 +68,29 @@ export default class Leaderboard extends React.Component {
         <ScrollView style={{width: "100%"}} showsVerticalScrollIndicator={false}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}  directionalLockEnabled={false}>
             <Table style={styles.table}>
-              <Row data={state.tableHead} flexArr={[1, 1, 1, 1, 1]} style={styles.head} textStyle={styles.text}/>
+              {/* <Cols data={state.tableHead}  textStyle={styles.text}/> */}
               <TableWrapper style={styles.wrapper}>
-                <Col data={state.tableTitle} style={styles.title} heightArr={[28, 28]} textStyle={styles.text}/>
-                <Rows data={state.tableData} flexArr={[1, 1, 1, 1]} style={styles.row} textStyle={styles.text}/>
+                <Col data={state.tableHead[0]}  style={styles.head} textStyle={styles.text}/>
+                {/* <Col data={state.tableData[0]}  style={styles.title} textStyle={styles.text}/> */}
+              </TableWrapper>
+              <TableWrapper style={styles.wrapper}>
+                <Col data={state.tableHead[1]}  style={styles.head} textStyle={styles.text}/>
+                {/* <Col data={state.tableData[1]}  style={styles.row} textStyle={styles.text}/> */}
+              </TableWrapper>
+              <TableWrapper style={styles.wrapper}>
+                <Col data={state.tableHead[2]}  style={styles.head} textStyle={styles.text}/>
+                {/* <Col data={state.tableData[2]}  style={styles.row} textStyle={styles.text}/> */}
+              </TableWrapper>
+              <TableWrapper style={styles.wrapper}>
+                <Col data={state.tableHead[3]}  style={styles.head} textStyle={styles.text}/>
+                {/* <Col data={state.tableData[3]}  style={styles.row} textStyle={styles.text}/> */}
+              </TableWrapper>
+              <TableWrapper style={styles.wrapper}>
+                <Col data={state.tableHead[4]}  style={styles.head} textStyle={styles.text}/>
+                {/* <Col data={state.tableData[4]}  style={styles.row} textStyle={styles.text}/> */}
               </TableWrapper>
             </Table> 
+            
           </ScrollView>
           
         </ScrollView>
@@ -82,11 +108,11 @@ export default class Leaderboard extends React.Component {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
   header: {fontSize: 20, padding: 10, paddingTop: 30, textAlign: 'center', fontWeight: 'bold'},
-  table: {width: 400},
-  head: { height: 40, backgroundColor: '#f1f8ff' },
-  wrapper: { flexDirection: 'row' },
+  table: { flexDirection: 'row', minWidth: 400},
+  head: { backgroundColor: '#f1f8ff', flex: 1, height: 28 },
+  wrapper: { flex: 1 },
   title: { flex: 1, backgroundColor: '#f6f8fa' },
-  row: { height: 28 },
+  row: {flex: 1},
   text: { textAlign: 'center' }
 });
 
@@ -110,14 +136,15 @@ function populateLeaderboard(leaderArray, numLeaders) {
 
 // populates table data with player info
 function populateTableData(topPlayers) {
-  let tableData = [];
+  let tableData = [[],[],[],[]];
+
   topPlayers.forEach((player) => {
-    let rowData = [];
-    rowData.push(player.name);
-    rowData.push(player.age);
-    rowData.push(player.school);
-    rowData.push(player.score);
-    tableData.push(rowData);
+    tableData[0].push(player.name);
+    tableData[1].push(player.age);
+    tableData[2].push(player.school);
+    tableData[3].push(player.score);
   });
+
+
   return tableData;
 }

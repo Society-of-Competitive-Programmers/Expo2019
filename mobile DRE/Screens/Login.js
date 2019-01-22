@@ -69,7 +69,7 @@ export default class Login extends React.Component {
     }
     else{
       database.ref("users/").push(profile);
-      this._navigate();
+      this.props.navigation.navigate('Stream');
     }
   }
 
