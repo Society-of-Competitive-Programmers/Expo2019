@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
-import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
+import { Table, TableWrapper, Row, Rows, Col, Cols } from 'react-native-table-component';
 import * as firebase from 'firebase';
 
 const database = firebase.database();
@@ -14,9 +14,10 @@ export default class Leaderboard extends React.Component {
     this.state = {
       
       tableHead: [[''], ['Name'], ['Age'], ['School'], ['Score']],
-      tableTitle: [],
-      topPlayers: [],
       tableData: [],
+      // tableTitle: [],
+      // topPlayers: [],
+      // tableData: [],
     };
 
     this.onUserData = this.onUserData.bind(this);
@@ -24,6 +25,7 @@ export default class Leaderboard extends React.Component {
 
   // Receives user data, sorts it, and populates table state
   onUserData(users) {
+    let data = [[], [], [], [], []];
     let tableTitle1 = [];
 
     let leaderArray = [];
@@ -33,17 +35,20 @@ export default class Leaderboard extends React.Component {
     });
     this.numLeaders = users.length;
     let playerArray = populateLeaderboard(leaderArray, users.length);
-    let dataArray = populateTableData(playerArray);
+    //let dataArray = populateTableData(playerArray);
 
-    for(let i = 1; i <= dataArray[0].length; i++){
-      tableTitle1.push(i);
-    }
+    let i = 1;
+    playerArray.forEach((player) => {
+      data[0].push(i++);
+      data[1].push(player.name);
+      data[2].push(player.age);
+      data[3].push(player.school);
+      data[4].push(player.score);
+    });
+
 
     this.setState({
-      topPlayers: playerArray,
-      tableData: dataArray,
-      tableTitle: tableTitle1
-      
+      tableData: data
     });    
   }
 
@@ -63,25 +68,26 @@ export default class Leaderboard extends React.Component {
         <ScrollView style={{width: "100%"}} showsVerticalScrollIndicator={false}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}  directionalLockEnabled={false}>
             <Table style={styles.table}>
+              {/* <Cols data={state.tableHead}  textStyle={styles.text}/> */}
               <TableWrapper style={styles.wrapper}>
-                <Col data={state.tableHead[0]} flexArr={[1, 1, 1, 1, 1]} heightArr={[28, 28]} style={styles.head} textStyle={styles.text}/>
-                <Col data={state.tableTitle} style={styles.title} heightArr={[28, 28]} textStyle={styles.text}/>
+                <Col data={state.tableHead[0]}  style={styles.head} textStyle={styles.text}/>
+                {/* <Col data={state.tableData[0]}  style={styles.title} textStyle={styles.text}/> */}
               </TableWrapper>
-              <TableWrapper>
-                <Col data={state.tableHead[1]} flexArr={[1, 1, 1, 1, 1]} heightArr={[28, 28]} style={styles.head} textStyle={styles.text}/>
-                <Col data={state.tableData[0]} flexArr={[1, 1, 1, 1]} heightArr={[28, 28]} style={styles.row} textStyle={styles.text}/>
+              <TableWrapper style={styles.wrapper}>
+                <Col data={state.tableHead[1]}  style={styles.head} textStyle={styles.text}/>
+                {/* <Col data={state.tableData[1]}  style={styles.row} textStyle={styles.text}/> */}
               </TableWrapper>
-              <TableWrapper>
-                <Col data={state.tableHead[2]} flexArr={[1, 1, 1, 1, 1]} heightArr={[28, 28]} style={styles.head} textStyle={styles.text}/>
-                <Col data={state.tableData[1]} flexArr={[1, 1, 1, 1]} heightArr={[28, 28]} style={styles.row} textStyle={styles.text}/>
+              <TableWrapper style={styles.wrapper}>
+                <Col data={state.tableHead[2]}  style={styles.head} textStyle={styles.text}/>
+                {/* <Col data={state.tableData[2]}  style={styles.row} textStyle={styles.text}/> */}
               </TableWrapper>
-              <TableWrapper>
-                <Col data={state.tableHead[3]} flexArr={[1, 1, 1, 1, 1]} heightArr={[28, 28]} style={styles.head} textStyle={styles.text}/>
-                <Col data={state.tableData[2]} flexArr={[1, 1, 1, 1]} heightArr={[28, 28]} style={styles.row} textStyle={styles.text}/>
+              <TableWrapper style={styles.wrapper}>
+                <Col data={state.tableHead[3]}  style={styles.head} textStyle={styles.text}/>
+                {/* <Col data={state.tableData[3]}  style={styles.row} textStyle={styles.text}/> */}
               </TableWrapper>
-              <TableWrapper>
-                <Col data={state.tableHead[4]} flexArr={[1, 1, 1, 1, 1]} heightArr={[28, 28]} style={styles.head} textStyle={styles.text}/>
-                <Col data={state.tableData[3]} flexArr={[1, 1, 1, 1]} heightArr={[28, 28]} style={styles.row} textStyle={styles.text}/>
+              <TableWrapper style={styles.wrapper}>
+                <Col data={state.tableHead[4]}  style={styles.head} textStyle={styles.text}/>
+                {/* <Col data={state.tableData[4]}  style={styles.row} textStyle={styles.text}/> */}
               </TableWrapper>
             </Table> 
             
@@ -102,11 +108,11 @@ export default class Leaderboard extends React.Component {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
   header: {fontSize: 20, padding: 10, paddingTop: 30, textAlign: 'center', fontWeight: 'bold'},
-  table: {minWidth: 400},
-  head: { height: 40, backgroundColor: '#f1f8ff' },
-  wrapper: { flexDirection: 'row' },
+  table: { flexDirection: 'row', minWidth: 400},
+  head: { backgroundColor: '#f1f8ff', flex: 1, height: 28 },
+  wrapper: { flex: 1 },
   title: { flex: 1, backgroundColor: '#f6f8fa' },
-  row: {},
+  row: {flex: 1},
   text: { textAlign: 'center' }
 });
 
