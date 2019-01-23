@@ -7,9 +7,8 @@ import React from "react";
 import {
   StyleSheet,
   Text,
-  View,
   TextInput,
-  Button,
+  TouchableOpacity,
   Image,
   ScrollView,
   TouchableHighlight
@@ -90,9 +89,25 @@ export default class Login extends React.Component {
       // Login Page Layout Team:
       // put all the layout elements inside this view i.e. all the text input boxes, buttons, all the styles
       //TODO
-      <ScrollView style={{ width: "100%", backgroundColor: "#23604E" }}>
+      <ScrollView
+        style={{
+          width: "100%",
+          backgroundColor: "#23604E"
+        }}
+        contentContainerStyle={{ alignItems: "center" }}
+      >
+        <Text
+          style={{
+            marginTop: 20,
+            fontSize: 30,
+            paddingTop: 50,
+            color: "#fff"
+          }}
+        >
+          D.R.E.
+        </Text>
         <KeyboardAwareScrollView
-          style={{ paddingTop: 100 }}
+          style={{ paddingTop: 50 }}
           resetScrollToCoords={{ x: 0, y: 0 }}
           contentContainerStyle={styles.container}
           scrollEnabled={true}
@@ -105,49 +120,48 @@ export default class Login extends React.Component {
             }}
             style={{ width: 200, height: 200 }}
           /> */}
-          <Text style={{ marginBottom: 20, marginTop: 20, fontSize: 30 }}>
-            {" "}
-            D.R.E.{" "}
-          </Text>
-          <View>
-            <TextInput
-              style={styles.textInput}
-              onChangeText={name => this.setState({ name })}
-              value={this.state.name}
-              placeholder={"Name"}
-              placeholderTextColor="#fff"
-              windowSoftInputMode="adjustResize"
-            />
-            <TextInput
-              style={styles.textInput}
-              onChangeText={age => this.setState({ age })}
-              value={this.state.age}
-              placeholder={"Age"}
-              placeholderTextColor="#fff"
-              windowSoftInputMode="adjustResize"
-            />
-            <TextInput
-              style={styles.textInput}
-              onChangeText={school => this.setState({ school })}
-              value={this.state.school}
-              placeholder={"School"}
-              placeholderTextColor="#fff"
-              windowSoftInputMode="adjustResize"
-            />
 
-            <Button
-              onPress={this._registerUser.bind(this) /*this._registerUser()*/}
-              title="Let's Get Started!!!"
-              color="#0066ff"
-            />
-          </View>
-          <TouchableHighlight
-            style={{}}
-            onPress={() => this.props.navigation.navigate("Leaderboard")}
+          <TextInput
+            style={styles.textInput}
+            onChangeText={name => this.setState({ name })}
+            value={this.state.name}
+            placeholder={"Name"}
+            placeholderTextColor="#fff"
+            windowSoftInputMode="adjustResize"
+            underlineColorAndroid="transparent"
+          />
+          <TextInput
+            style={styles.textInput}
+            onChangeText={age => this.setState({ age })}
+            value={this.state.age}
+            placeholder={"Age"}
+            placeholderTextColor="#fff"
+            windowSoftInputMode="adjustResize"
+            underlineColorAndroid="transparent"
+          />
+          <TextInput
+            style={styles.textInput}
+            onChangeText={school => this.setState({ school })}
+            value={this.state.school}
+            placeholder={"School"}
+            placeholderTextColor="#fff"
+            windowSoftInputMode="adjustResize"
+            underlineColorAndroid="transparent"
+          />
+
+          <TouchableOpacity
+            style={styles.startButton}
+            onPress={this._registerUser.bind(this) /*this._registerUser()*/}
           >
-            <Text style={{ color: "#ECD459" }}>Leaderboard</Text>
-          </TouchableHighlight>
+            <Text style={styles.btnText}>START</Text>
+          </TouchableOpacity>
         </KeyboardAwareScrollView>
+        <TouchableHighlight
+          style={{ marginTop: 30 }}
+          onPress={() => this.props.navigation.navigate("Leaderboard")}
+        >
+          <Text style={{ color: "#ECD459", fontSize: 25 }}>Leaderboard</Text>
+        </TouchableHighlight>
       </ScrollView>
     );
   }
@@ -158,16 +172,29 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    height: 500,
+    width: 350,
+    borderRadius: 10
   },
   textInput: {
-    height: 40,
+    height: 50,
     width: 250,
     borderColor: "gray",
-    backgroundColor: "#D3D3D3",
+    backgroundColor: "#23604E",
     borderWidth: 1,
-    marginBottom: 10,
+    margin: 20,
     paddingLeft: 5,
-    alignItems: "center"
+    borderRadius: 10,
+    textAlign: "center"
+  },
+  startButton: {
+    width: 250,
+    height: 100,
+    borderRadius: 50,
+    margin: 20
+  },
+  btnText: {
+    fontSize: 30
   }
 });
