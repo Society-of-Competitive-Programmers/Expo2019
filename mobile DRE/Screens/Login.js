@@ -98,7 +98,7 @@ export default class Login extends React.Component {
       >
         <Text
           style={{
-            marginTop: 20,
+            marginTop: 15,
             fontSize: 30,
             paddingTop: 50,
             color: "#fff"
@@ -106,6 +106,10 @@ export default class Login extends React.Component {
         >
           D.R.E.
         </Text>
+        <Image
+          source={require("../assets/loginLogo.png")}
+          style={styles.loginImage}
+        />
         <KeyboardAwareScrollView
           style={{ paddingTop: 50 }}
           resetScrollToCoords={{ x: 0, y: 0 }}
@@ -113,14 +117,6 @@ export default class Login extends React.Component {
           scrollEnabled={true}
           animated={true}
         >
-          {/* <Image
-            source={{
-              uri: "https://facebook.github.io/react/logo-og.png"
-              // cache: 'only-if-cached',
-            }}
-            style={{ width: 200, height: 200 }}
-          /> */}
-
           <TextInput
             style={styles.textInput}
             onChangeText={name => this.setState({ name })}
@@ -175,7 +171,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: 500,
     width: 350,
-    borderRadius: 10
+    borderRadius: 10,
+    paddingTop: 100
+  },
+  loginImage: {
+    height: 200,
+    width: 200,
+    zIndex: 100,
+    position: "absolute",
+    top: 100
   },
   textInput: {
     height: 50,
@@ -184,7 +188,7 @@ const styles = StyleSheet.create({
     borderColor: "#fff",
     backgroundColor: "#23604E",
     borderWidth: 1,
-    margin: 20,
+    marginTop: 20,
     paddingLeft: 5,
     borderRadius: 10,
     textAlign: "center",
