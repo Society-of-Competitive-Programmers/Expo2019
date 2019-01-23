@@ -180,21 +180,27 @@ const styles = StyleSheet.create({
   textInput: {
     height: 50,
     width: 250,
-    borderColor: "gray",
+    color: "#fff",
+    borderColor: "#fff",
     backgroundColor: "#23604E",
     borderWidth: 1,
     margin: 20,
     paddingLeft: 5,
     borderRadius: 10,
-    textAlign: "center"
+    textAlign: "center",
+    fontSize: 20
   },
   startButton: {
     width: 250,
-    height: 100,
-    borderRadius: 50,
-    margin: 20
+    height: 80,
+    borderRadius: 10,
+    margin: 20,
+    backgroundColor: "#18CD12",
+    alignItems: "center",
+    justifyContent: "center"
   },
   btnText: {
-    fontSize: 30
+    fontSize: 30,
+    color: "#fff"
   }
 });
