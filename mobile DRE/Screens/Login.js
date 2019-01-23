@@ -11,7 +11,8 @@ import {
   TextInput,
   Button,
   Image,
-  ScrollView
+  ScrollView,
+  TouchableHighlight
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as firebase from "firebase";
@@ -89,7 +90,7 @@ export default class Login extends React.Component {
       // Login Page Layout Team:
       // put all the layout elements inside this view i.e. all the text input boxes, buttons, all the styles
       //TODO
-      <ScrollView style={{ width: "100%" }}>
+      <ScrollView style={{ width: "100%", backgroundColor: "#23604E" }}>
         <KeyboardAwareScrollView
           style={{ paddingTop: 100 }}
           resetScrollToCoords={{ x: 0, y: 0 }}
@@ -108,44 +109,46 @@ export default class Login extends React.Component {
             {" "}
             D.R.E.{" "}
           </Text>
-          <TextInput
-            style={styles.textInput}
-            onChangeText={name => this.setState({ name })}
-            value={this.state.name}
-            placeholder={"Name"}
-            placeholderTextColor="black"
-            windowSoftInputMode="adjustResize"
-          />
-          <TextInput
-            style={styles.textInput}
-            onChangeText={age => this.setState({ age })}
-            value={this.state.age}
-            placeholder={"Age"}
-            placeholderTextColor="black"
-            windowSoftInputMode="adjustResize"
-          />
-          <TextInput
-            style={styles.textInput}
-            onChangeText={school => this.setState({ school })}
-            value={this.state.school}
-            placeholder={"School"}
-            placeholderTextColor="black"
-            windowSoftInputMode="adjustResize"
-          />
+          <View>
+            <TextInput
+              style={styles.textInput}
+              onChangeText={name => this.setState({ name })}
+              value={this.state.name}
+              placeholder={"Name"}
+              placeholderTextColor="#fff"
+              windowSoftInputMode="adjustResize"
+            />
+            <TextInput
+              style={styles.textInput}
+              onChangeText={age => this.setState({ age })}
+              value={this.state.age}
+              placeholder={"Age"}
+              placeholderTextColor="#fff"
+              windowSoftInputMode="adjustResize"
+            />
+            <TextInput
+              style={styles.textInput}
+              onChangeText={school => this.setState({ school })}
+              value={this.state.school}
+              placeholder={"School"}
+              placeholderTextColor="#fff"
+              windowSoftInputMode="adjustResize"
+            />
 
-          <Button
-            onPress={this._registerUser.bind(this) /*this._registerUser()*/}
-            title="Let's Get Started!!!"
-            color="#0066ff"
-          />
-          <Button
+            <Button
+              onPress={this._registerUser.bind(this) /*this._registerUser()*/}
+              title="Let's Get Started!!!"
+              color="#0066ff"
+            />
+          </View>
+          <TouchableHighlight
+            style={{}}
             onPress={() => this.props.navigation.navigate("Leaderboard")}
-            title="Leaderboard"
-            color="#ff0000"
-          />
+          >
+            <Text style={{ color: "#ECD459" }}>Leaderboard</Text>
+          </TouchableHighlight>
         </KeyboardAwareScrollView>
       </ScrollView>
-      //TODO
     );
   }
 }
@@ -164,6 +167,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#D3D3D3",
     borderWidth: 1,
     marginBottom: 10,
-    paddingLeft: 5
+    paddingLeft: 5,
+    alignItems: "center"
   }
 });
