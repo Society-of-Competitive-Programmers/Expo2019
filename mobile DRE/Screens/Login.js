@@ -106,10 +106,7 @@ export default class Login extends React.Component {
         >
           D.R.E.
         </Text>
-        <Image
-          source={require("../assets/loginLogo.png")}
-          style={styles.loginImage}
-        />
+        
         <KeyboardAwareScrollView
           style={{ paddingTop: 50 }}
           resetScrollToCoords={{ x: 0, y: 0 }}
@@ -117,6 +114,10 @@ export default class Login extends React.Component {
           scrollEnabled={true}
           animated={true}
         >
+          <Image
+            source={require("../assets/loginLogo.png")}
+            style={styles.loginImage}
+          />
           <TextInput
             style={styles.textInput}
             onChangeText={name => this.setState({ name })}
@@ -179,7 +180,7 @@ const styles = StyleSheet.create({
     width: 200,
     zIndex: 100,
     position: "absolute",
-    top: 100
+    top: -60
   },
   textInput: {
     height: 50,

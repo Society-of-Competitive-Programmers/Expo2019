@@ -15,9 +15,12 @@ import io from "socket.io-client/dist/socket.io";
 export default class App extends React.Component {
   constructor(props) {
     super();
+    var maxSaved = 10;
     this.state = {
-      direction: 0
-    };
+      direction: 0,
+      numSaved: 0,
+    }
+
 
     this._turn = this._turn.bind(this);
     this.stopTurn = this.stopTurn.bind(this);
@@ -30,11 +33,17 @@ export default class App extends React.Component {
     this.socket.on("connect", function() {
       console.log("Connected to server!");
     });
+    //Matt, you got dis!!!
+    this.socket.on('<Enter Func Name>', function(){
+      incrementSaved();
+    });
   }
 
   state = {
-    direction: 0
-  };
+    direction: 0,
+    numSaved: 0
+  }
+
 
   componentDidMount() {
     Expo.ScreenOrientation.allow(
@@ -64,6 +73,16 @@ export default class App extends React.Component {
   _navigator() {
     const { navigate } = this.props.navigation;
     navigate("Leaderboard");
+  }
+
+  incrementSaved(){
+    var newSaved = this.state.numSaved + 1;
+    if(newSaved == maxSaved){
+      _navigator();
+    }
+    else {
+      this.setState({numSaved: newSaved});
+    }
   }
 
   render() {
