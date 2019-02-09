@@ -11,6 +11,23 @@ import {
   TouchableOpacity
 } from "react-native";
 import io from "socket.io-client/dist/socket.io";
+import * as firebase from "firebase";
+
+// firebase configurations for the project
+const firebaseConfig = {
+  apiKey: "AIzaSyCyAOjCgRO1zjYhbEM-_si8Mgb6WHoCep8",
+  authDomain: "scp-dre.firebaseapp.com",
+  databaseURL: "https://scp-dre.firebaseio.com",
+  projectId: "scp-dre",
+  storageBucket: "",
+  messagingSenderId: "758043467370"
+};
+
+// initializing the firebase instance here
+firebase.initializeApp(firebaseConfig);
+
+// Use this variable to make any calls to the database
+const database = firebase.database();
 
 export default class App extends React.Component {
   constructor(props) {
@@ -97,9 +114,9 @@ export default class App extends React.Component {
 
   navigateToLeaderBoard(){
     const profile = {
-      name: this.props.getParam('name', 'Bob'),
-      age: this.props.getParam('age', 12),
-      school: this.props.getParam('school', 'USF'),
+      name: this.props.navigation.getParam('name', 'Bob'),
+      age: this.props.navigation.getParam('age', 12),
+      school: this.props.navigation.getParam('school', 'USF'),
       score: this.state.score
     };
 

@@ -16,21 +16,21 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as firebase from "firebase";
 
-// firebase configurations for the project
-const firebaseConfig = {
-  apiKey: "AIzaSyCyAOjCgRO1zjYhbEM-_si8Mgb6WHoCep8",
-  authDomain: "scp-dre.firebaseapp.com",
-  databaseURL: "https://scp-dre.firebaseio.com",
-  projectId: "scp-dre",
-  storageBucket: "",
-  messagingSenderId: "758043467370"
-};
+// // firebase configurations for the project
+// const firebaseConfig = {
+//   apiKey: "AIzaSyCyAOjCgRO1zjYhbEM-_si8Mgb6WHoCep8",
+//   authDomain: "scp-dre.firebaseapp.com",
+//   databaseURL: "https://scp-dre.firebaseio.com",
+//   projectId: "scp-dre",
+//   storageBucket: "",
+//   messagingSenderId: "758043467370"
+// };
 
-// initializing the firebase instance here
-firebase.initializeApp(firebaseConfig);
+// // initializing the firebase instance here
+// firebase.initializeApp(firebaseConfig);
 
-// Use this variable to make any calls to the database
-const database = firebase.database();
+// // Use this variable to make any calls to the database
+// const database = firebase.database();
 
 export default class Login extends React.Component {
   constructor() {
