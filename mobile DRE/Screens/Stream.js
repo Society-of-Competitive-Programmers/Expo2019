@@ -16,9 +16,12 @@ export default class App extends React.Component {
   constructor(props) {
     super();
     var maxSaved = 10;
+    var startTime = Date.now();
     this.state = {
       direction: 0,
       numSaved: 0,
+      score: 0,
+      startTime: startTime
     }
 
 
@@ -26,6 +29,7 @@ export default class App extends React.Component {
     this.stopTurn = this.stopTurn.bind(this);
     this._move = this._move.bind(this);
     this.stopMove = this.stopMove.bind(this);
+    this.navigateToLeaderBoard = this.navigateToLeaderBoard.bind(this);
 
     this.socket = io("https://sleepy-everglades-29815.herokuapp.com/", {
       jsonp: false
@@ -41,7 +45,8 @@ export default class App extends React.Component {
 
   state = {
     direction: 0,
-    numSaved: 0
+    numSaved: 0,
+    score: 0
   }
 
 
@@ -77,12 +82,29 @@ export default class App extends React.Component {
 
   incrementSaved(){
     var newSaved = this.state.numSaved + 1;
+    var endTime = Date.now;
+    var newScore = this.state.score + (500 - (endTime - this.state.startTime));
+    if(newScore < 50)
+      newScore = 50;
     if(newSaved == maxSaved){
-      _navigator();
+      this.state.score = this.state.score + newScore;
+      navigateToLeaderBoard();
     }
     else {
-      this.setState({numSaved: newSaved});
+      this.setState({numSaved: newSaved, startTime: endTime, score: newScore});
     }
+  }
+
+  navigateToLeaderBoard(){
+    const profile = {
+      name: this.props.getParam('name', 'Bob'),
+      age: this.props.getParam('age', 12),
+      school: this.props.getParam('school', 'USF'),
+      score: this.state.score
+    };
+
+    database.ref("users/").push(profile);
+    this.props.navigation.navigate("Leaderboard")
   }
 
   render() {
@@ -113,7 +135,7 @@ export default class App extends React.Component {
         >
           <TouchableOpacity
             style={{ position: "relative" }}
-            onPress={() => this.props.navigation.navigate("Leaderboard")}
+            onPress={() => this.navigateToLeaderBoard()}
           >
             <View style={styles.button}>
               <Text style={styles.buttonText}>FINISH</Text>

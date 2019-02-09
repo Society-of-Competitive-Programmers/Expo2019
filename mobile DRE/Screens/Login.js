@@ -73,8 +73,12 @@ export default class Login extends React.Component {
     if (profile.name == "" || profile.age == "" || profile.school == "") {
       alert("All fields must be filled in");
     } else {
-      database.ref("users/").push(profile);
-      this.props.navigation.navigate("Stream");
+      //database.ref("users/").push(profile);
+      this.props.navigation.navigate("Stream", {
+        name: this.state.name,
+        age: this.state.age,
+        school: this.state.school
+      });
     }
   }
 
