@@ -11,15 +11,37 @@ import {
   TouchableOpacity
 } from "react-native";
 import io from "socket.io-client/dist/socket.io";
+import * as firebase from "firebase";
+
+// firebase configurations for the project
+const firebaseConfig = {
+  apiKey: "AIzaSyCyAOjCgRO1zjYhbEM-_si8Mgb6WHoCep8",
+  authDomain: "scp-dre.firebaseapp.com",
+  databaseURL: "https://scp-dre.firebaseio.com",
+  projectId: "scp-dre",
+  storageBucket: "",
+  messagingSenderId: "758043467370"
+};
+
+// initializing the firebase instance here
+firebase.initializeApp(firebaseConfig);
+
+// Use this variable to make any calls to the database
+const database = firebase.database();
 
 export default class App extends React.Component {
   constructor(props) {
     super();
     const me = this;
+    
+    var maxSaved = 10;
+    var startTime = Date.now();
     this.state = {
       direction: 0,
       numSaved: 0,
+      score: 0,
       maxSaved: 2,
+      startTime: startTime
     }
 
     this._turn = this._turn.bind(this);
@@ -28,6 +50,7 @@ export default class App extends React.Component {
     this.stopMove = this.stopMove.bind(this);
     this.saveHuman = this.saveHuman.bind(this);
     this.incrementSaved = this.incrementSaved.bind(this);
+    this.navigateToLeaderBoard = this.navigateToLeaderBoard.bind(this);
 
     this.socket = io("https://dre-2018.herokuapp.com/", {
       jsonp: false
@@ -47,6 +70,7 @@ export default class App extends React.Component {
     direction: 0,
     numSaved: 0,
     maxSaved: 0,
+    score: 0
   }
 
   componentDidMount() {
@@ -85,13 +109,29 @@ export default class App extends React.Component {
 
   incrementSaved(){
     var newSaved = this.state.numSaved + 1;
-    console.log(newSaved);
-    if(newSaved == this.state.maxSaved){
-      this._navigator();
+    var endTime = Date.now;
+    var newScore = this.state.score + (500 - (endTime - this.state.startTime));
+    if(newScore < 50)
+      newScore = 50;
+    if(newSaved == maxSaved){
+      this.state.score = this.state.score + newScore;
+      navigateToLeaderBoard();
     }
     else {
-      this.setState({numSaved: newSaved});
+      this.setState({numSaved: newSaved, startTime: endTime, score: newScore});
     }
+  }
+
+  navigateToLeaderBoard(){
+    const profile = {
+      name: this.props.navigation.getParam('name', 'Bob'),
+      age: this.props.navigation.getParam('age', 12),
+      school: this.props.navigation.getParam('school', 'USF'),
+      score: this.state.score
+    };
+
+    database.ref("users/").push(profile);
+    this.props.navigation.navigate("Leaderboard")
   }
 
   render() {
@@ -122,7 +162,7 @@ export default class App extends React.Component {
         >
           <TouchableOpacity
             style={{ position: "relative" }}
-            onPress={() => this.props.navigation.navigate("Leaderboard")}
+            onPress={() => this.navigateToLeaderBoard()}
           >
             <View style={styles.button}>
               <Text style={styles.buttonText}>FINISH</Text>

@@ -11,7 +11,7 @@ export default class Leaderboard extends React.Component {
 
     this.state = {
       widthArr: [1, 3, 1, 3, 2], //width of columns
-      tableHead: ["", "Name", "Age", "School", "Time"],
+      tableHead: ["", "Name", "Age", "School", "Score"],
       topPlayers: [],
       tableData: []
     };
@@ -37,7 +37,7 @@ export default class Leaderboard extends React.Component {
   }
 
   componentDidMount() {
-    const usersRef = database.ref("users/");
+    const usersRef = database.ref("users/").orderByChild("score");
     usersRef.on("value", this.onUserData);
 
     Expo.ScreenOrientation.allow(
