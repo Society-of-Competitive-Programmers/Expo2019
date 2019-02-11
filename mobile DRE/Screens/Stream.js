@@ -15,35 +15,39 @@ import io from "socket.io-client/dist/socket.io";
 export default class App extends React.Component {
   constructor(props) {
     super();
-    var maxSaved = 10;
+    const me = this;
     this.state = {
       direction: 0,
       numSaved: 0,
+      maxSaved: 2,
     }
-
 
     this._turn = this._turn.bind(this);
     this.stopTurn = this.stopTurn.bind(this);
     this._move = this._move.bind(this);
     this.stopMove = this.stopMove.bind(this);
+    this.saveHuman = this.saveHuman.bind(this);
+    this.incrementSaved = this.incrementSaved.bind(this);
 
-    this.socket = io("https://sleepy-everglades-29815.herokuapp.com/", {
+    this.socket = io("https://dre-2018.herokuapp.com/", {
       jsonp: false
     });
+
     this.socket.on("connect", function() {
       console.log("Connected to server!");
     });
-    //Matt, you got dis!!!
-    this.socket.on('<Enter Func Name>', function(){
-      incrementSaved();
+
+    this.socket.on('incSaved', function(){
+      me.incrementSaved();
     });
+    
   }
 
   state = {
     direction: 0,
-    numSaved: 0
+    numSaved: 0,
+    maxSaved: 0,
   }
-
 
   componentDidMount() {
     Expo.ScreenOrientation.allow(
@@ -75,10 +79,15 @@ export default class App extends React.Component {
     navigate("Leaderboard");
   }
 
+  saveHuman() {
+    this.socket.emit('save');
+  }
+
   incrementSaved(){
     var newSaved = this.state.numSaved + 1;
-    if(newSaved == maxSaved){
-      _navigator();
+    console.log(newSaved);
+    if(newSaved == this.state.maxSaved){
+      this._navigator();
     }
     else {
       this.setState({numSaved: newSaved});
@@ -89,7 +98,7 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <WebView
-          source={{ uri: "https://sleepy-everglades-29815.herokuapp.com/" }} // Insert Pi's camera stream link
+          source={{ uri: "http://192.168.1.18:8081/" }} // Insert Pi's camera stream link
           style={{
             marginTop: 0,
             flex: 1,
@@ -155,7 +164,15 @@ export default class App extends React.Component {
         </View>
 
         {/* Collection of Buttons on right side of screen */}
-        <View style={{ flex: 1, position: "absolute", right: 10, top: 80 }}>
+        <View style={{ flex: 1, position: "absolute", right: 10, top: 40 }}>
+          <TouchableOpacity
+            style={{ position: "relative" }}
+            onPress={() => this.saveHuman()}
+          >
+            <View style={styles.button}>
+              <Text style={styles.buttonText}>Mark</Text>
+            </View>
+          </TouchableOpacity>
           {/* Left Button */}
           <TouchableOpacity
             onPressIn={() => this._turn("left")}
