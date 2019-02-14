@@ -33,14 +33,12 @@ export default class App extends React.Component {
   constructor(props) {
     super();
     const me = this;
-    
-    var maxSaved = 10;
     var startTime = Date.now();
     this.state = {
       direction: 0,
       numSaved: 0,
       score: 0,
-      maxSaved: 2,
+      maxSaved: 6,
       startTime: startTime
     }
 
@@ -107,21 +105,6 @@ export default class App extends React.Component {
     this.socket.emit('save');
   }
 
-  incrementSaved(){
-    var newSaved = this.state.numSaved + 1;
-    var endTime = Date.now;
-    var newScore = this.state.score + (500 - (endTime - this.state.startTime));
-    if(newScore < 50)
-      newScore = 50;
-    if(newSaved == maxSaved){
-      this.state.score = this.state.score + newScore;
-      navigateToLeaderBoard();
-    }
-    else {
-      this.setState({numSaved: newSaved, startTime: endTime, score: newScore});
-    }
-  }
-
   navigateToLeaderBoard(){
     const profile = {
       name: this.props.navigation.getParam('name', 'Bob'),
@@ -134,11 +117,26 @@ export default class App extends React.Component {
     this.props.navigation.navigate("Leaderboard")
   }
 
+  incrementSaved(){
+    var newSaved = this.state.numSaved + 1;
+    var endTime = Date.now;
+    var newScore = this.state.score + (500 - (endTime - this.state.startTime));
+    if(newScore < 50)
+      newScore = 50;
+    if(newSaved == this.state.maxSaved){
+      this.state.score = this.state.score + newScore;
+      this.navigateToLeaderBoard();
+    }
+    else {
+      this.setState({numSaved: newSaved, startTime: endTime, score: newScore});
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <WebView
-          source={{ uri: "http://192.168.1.18:8081/" }} // Insert Pi's camera stream link
+          source={{ uri: "http://192.168.1.30:8081/" }} // Insert Pi's camera stream link
           style={{
             marginTop: 0,
             flex: 1,
