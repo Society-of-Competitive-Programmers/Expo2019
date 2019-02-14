@@ -38,7 +38,8 @@ export default class App extends React.Component {
       numSaved: 0,
       score: 0,
       maxSaved: 6,
-      startTime: startTime
+      startTime: startTime,
+      isBtnDisabled: false
     }
 
     this._turn = this._turn.bind(this);
@@ -119,6 +120,7 @@ export default class App extends React.Component {
   }
 
   incrementSaved(){
+    const me = this;
     var newSaved = this.state.numSaved + 1;
     var endTime = Date.now();
     var newScore = this.state.score + (500 - (endTime - this.state.startTime)/100);
@@ -130,7 +132,10 @@ export default class App extends React.Component {
       this.navigateToLeaderBoard();
     }
     else {
-      this.setState({numSaved: newSaved, startTime: endTime, score: newScore});
+      this.setState({numSaved: newSaved, startTime: endTime, score: newScore, isBtnDisabled: true});
+      setTimeout(function(){
+        me.setState({isBtnDisabled: false});
+      }, 2500)
     }
   }
 
@@ -140,6 +145,7 @@ export default class App extends React.Component {
         <Toast
           ref="toast"
           style={{backgroundColor:'#18CD12'}}
+          defaultCloseDelay={500}
           position='top'
           positionValue={10}
           fadeInDuration={500}
@@ -216,6 +222,7 @@ export default class App extends React.Component {
         {/* Collection of Buttons on right side of screen */}
         <View style={{ flex: 1, position: "absolute", right: 10, top: 40 }}>
           <TouchableOpacity
+            disabled={this.state.isBtnDisabled}
             style={{ position: "relative" }}
             onPress={() => this.saveHuman()}
           >

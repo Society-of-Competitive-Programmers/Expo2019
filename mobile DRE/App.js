@@ -10,6 +10,7 @@ import Stream from './Screens/Stream.js'
 import Leaderboard from './Screens/Leaderboard.js'
 import {createSwitchNavigator} from 'react-navigation'
 
+console.disableYellowBox = true;
 
 const AppNavigator = createSwitchNavigator({
  

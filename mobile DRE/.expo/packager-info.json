@@ -3,7 +3,7 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "expoServerNgrokUrl": "https://hn-h92.anonymous.mobile-dre.exp.direct",
+  "packagerNgrokUrl": "https://packager.hn-h92.anonymous.mobile-dre.exp.direct",
+  "ngrokPid": 15404
 }
