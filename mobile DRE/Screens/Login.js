@@ -14,7 +14,7 @@ import {
   TouchableHighlight
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import * as firebase from "firebase";
+import *  as firebase from "firebase";
 
 // // firebase configurations for the project
 // const firebaseConfig = {

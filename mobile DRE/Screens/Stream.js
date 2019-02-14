@@ -10,21 +10,20 @@ import {
   Image,
   TouchableOpacity
 } from "react-native";
+import Toast, {DURATION} from 'react-native-easy-toast'
 import io from "socket.io-client/dist/socket.io";
 import * as firebase from "firebase";
 
 // firebase configurations for the project
-const firebaseConfig = {
-  apiKey: "AIzaSyCyAOjCgRO1zjYhbEM-_si8Mgb6WHoCep8",
-  authDomain: "scp-dre.firebaseapp.com",
-  databaseURL: "https://scp-dre.firebaseio.com",
-  projectId: "scp-dre",
-  storageBucket: "",
-  messagingSenderId: "758043467370"
+var config = {
+  apiKey: "AIzaSyCQnerH6OCkKcVFjRlojftfHirmOB_npRc",
+  authDomain: "scp-dre-210ba.firebaseapp.com",
+  databaseURL: "https://scp-dre-210ba.firebaseio.com",
+  projectId: "scp-dre-210ba",
+  storageBucket: "scp-dre-210ba.appspot.com",
+  messagingSenderId: "629505421773"
 };
-
-// initializing the firebase instance here
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(config);
 
 // Use this variable to make any calls to the database
 const database = firebase.database();
@@ -62,6 +61,8 @@ export default class App extends React.Component {
       me.incrementSaved();
     });
     
+    this.navigateToLeaderBoard.bind(this);
+    this.incrementSaved.bind(this)
   }
 
   state = {
@@ -119,12 +120,13 @@ export default class App extends React.Component {
 
   incrementSaved(){
     var newSaved = this.state.numSaved + 1;
-    var endTime = Date.now;
-    var newScore = this.state.score + (500 - (endTime - this.state.startTime));
+    var endTime = Date.now();
+    var newScore = this.state.score + (500 - (endTime - this.state.startTime)/100);
+    var peopleLeft = (this.state.maxSaved - newSaved).toString()
+    this.refs.toast.show('New Person Saved! ' + peopleLeft + ' more people left!')
     if(newScore < 50)
       newScore = 50;
     if(newSaved == this.state.maxSaved){
-      this.state.score = this.state.score + newScore;
       this.navigateToLeaderBoard();
     }
     else {
@@ -135,6 +137,16 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <Toast
+          ref="toast"
+          style={{backgroundColor:'#18CD12'}}
+          position='top'
+          positionValue={10}
+          fadeInDuration={500}
+          fadeOutDuration={750}
+          opacity={0.8}
+          textStyle={{color:'white'}}
+        />
         <WebView
           source={{ uri: "http://192.168.1.30:8081/" }} // Insert Pi's camera stream link
           style={{
