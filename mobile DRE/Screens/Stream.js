@@ -37,7 +37,7 @@ export default class App extends React.Component {
       direction: 0,
       numSaved: 0,
       score: 0,
-      maxSaved: 6,
+      maxSaved: 1,
       startTime: startTime,
       isBtnDisabled: false
     }
@@ -121,15 +121,19 @@ export default class App extends React.Component {
 
   incrementSaved(){
     const me = this;
-    var newSaved = this.state.numSaved + 1;
+    var newSaved = me.state.numSaved + 1;
     var endTime = Date.now();
-    var newScore = this.state.score + (500 - (endTime - this.state.startTime)/100);
-    var peopleLeft = (this.state.maxSaved - newSaved).toString()
-    this.refs.toast.show('New Person Saved! ' + peopleLeft + ' more people left!')
-    if(newScore < 50)
-      newScore = 50;
-    if(newSaved == this.state.maxSaved){
-      this.navigateToLeaderBoard();
+    var addScore = (500 - (endTime - me.state.startTime)/100);
+    var newScore = me.state.score + addScore;
+    var peopleLeft = (me.state.maxSaved - newSaved).toString();
+    if(peopleLeft != undefined &&peopleLeft != null)
+      me.refs.toast.show('New Person Saved! ' + peopleLeft + ' more people left!');
+    else
+      me.refs.toast.show('New Person Saved! ');
+    if(addScore < 50)
+      newScore += 50;
+    if(newSaved == me.state.maxSaved){
+      me.navigateToLeaderBoard();
     }
     else {
       this.setState({numSaved: newSaved, startTime: endTime, score: newScore, isBtnDisabled: true});
@@ -154,7 +158,7 @@ export default class App extends React.Component {
           textStyle={{color:'white'}}
         />
         <WebView
-          source={{ uri: "http://192.168.1.30:8081/" }} // Insert Pi's camera stream link
+          source={{ uri: "http://10.224.7.152:8081/" }} // Insert Pi's camera stream link
           style={{
             marginTop: 0,
             flex: 1,
