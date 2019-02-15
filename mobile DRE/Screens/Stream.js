@@ -126,16 +126,13 @@ export default class App extends React.Component {
     var addScore = (500 - (endTime - me.state.startTime)/100);
     var newScore = me.state.score + addScore;
     var peopleLeft = (me.state.maxSaved - newSaved).toString();
-    if(peopleLeft != undefined &&peopleLeft != null)
-      me.refs.toast.show('New Person Saved! ' + peopleLeft + ' more people left!');
-    else
-      me.refs.toast.show('New Person Saved! ');
     if(addScore < 50)
       newScore += 50;
     if(newSaved == me.state.maxSaved){
       me.navigateToLeaderBoard();
     }
     else {
+      me.refs.toast.show('New Person Saved!');
       this.setState({numSaved: newSaved, startTime: endTime, score: newScore, isBtnDisabled: true});
       setTimeout(function(){
         me.setState({isBtnDisabled: false});
